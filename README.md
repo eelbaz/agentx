@@ -1,152 +1,106 @@
-# AgentX Assistant
+# 🤖 AgentX
 
-AgentX Assistant is a powerful AI agent framework built on top of the smolagents paradigm, designed to create and manage intelligent agents that can perform complex tasks using Python code and a variety of tools.
+AgentX is your AI-powered coding companion that thinks, codes, and solves problems alongside you. Built on the smolagents framework, it combines the power of multiple LLMs with a suite of specialized tools to help you tackle complex programming tasks.
 
-## Features
+![AgentX Demo](docs/demo.gif)
 
-- 🤖 Multi-provider LLM support (OpenAI, Anthropic, DeepSeek, Ollama)
-- 🛠️ Extensible tool system for agent capabilities
-- 🌐 Web-based user interface for agent interaction
-- ⚡ Real-time streaming of agent responses
-- 🔄 Built-in error handling and recovery
-- 🔒 Secure package management and execution
+## ✨ What Makes AgentX Special
 
-## Installation
+- **Multi-Brain Intelligence**: Switch between different LLM providers (OpenAI, Anthropic, DeepSeek, Ollama) to leverage their unique strengths
+- **Real Coding Partner**: Not just suggestions - AgentX writes, tests, and fixes code in real-time
+- **Tool-Powered**: Equipped with web search, system commands, file operations, and more
+- **Security First**: Sandboxed execution environment with strict package controls
+- **Beautiful UI**: Clean, responsive interface with real-time streaming responses
 
-1. Clone the repository:
+## 🚀 Quick Start
+
 ```bash
+# Clone and enter the project
 git clone https://github.com/eelbaz/agentx.git
 cd agentx
-```
 
-2. Create and activate a virtual environment:
-```bash
-# On Unix/macOS
+# Set up environment
 python -m venv venv
-source venv/bin/activate
-
-# On Windows
-python -m venv venv
-venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
+source venv/bin/activate  # or `venv\Scripts\activate` on Windows
 pip install -r requirements.txt
-```
 
-## Configuration
+# Configure your keys
+cp .env.example .env     # Then edit .env with your API keys
 
-1. Copy `.env.example` to `.env` and fill in your API keys:
-```bash
-cp .env.example .env
-```
-
-2. Required API keys:
-- `OPENAI_API_KEY`: For OpenAI models
-- `ANTHROPIC_API_KEY`: For Anthropic models
-- `HF_API_TOKEN`: For Hugging Face models
-- `DEEPSEEK_API_KEY`: For DeepSeek models
-
-Optional API keys:
-- Twitter API keys (for Twitter search functionality)
-- E2B API key (for secure code execution)
-
-## Running the Application
-
-Start the FastAPI application:
-```bash
+# Launch!
 uvicorn src.app:app --reload
 ```
 
-The application will be available at `http://localhost:8000`.
+Then open http://localhost:8000 in your browser and start chatting with your new coding companion!
 
-## Available Tools
+## 🔑 API Keys
 
-### Core Tools
-- 🔍 Web Search Tool (DuckDuckGo integration)
-- 🌐 Web Scrape Tool
-- 💻 System Command Tool
-- 📁 File System Tool
-- 🐦 Twitter Search Tool
-- ℹ️ System Info Tool
+You'll need at least one of these to get started:
+- OpenAI API key (recommended)
+- Anthropic API key
+- HuggingFace API token
+- DeepSeek API key
 
-## Usage
+Optional but enhances capabilities:
+- Twitter API keys (for research)
+- E2B API key (for secure code execution)
 
-1. Select your preferred LLM provider (OpenAI, Anthropic, DeepSeek, or Ollama)
-2. Choose a model from the available options
-3. Type your request in the chat input
-4. The agent will:
-   - Analyze your request
-   - Create an execution plan
-   - Use appropriate tools to fulfill the request
-   - Stream the response back to you
+## 🛠️ Core Tools
 
-## Development
+AgentX comes equipped with:
 
-### Project Structure
-```
-agentx/
-├── src/
-│   ├── tools/
-│   │   └── base_tools.py
-│   ├── agent_manager.py
-│   ├── llm.py
-│   └── app.py
-├── tests/
-├── requirements.txt
-└── README.md
-```
+| Tool | Description |
+|------|-------------|
+| 🔍 Web Search | Research using DuckDuckGo |
+| 🌐 Web Scraper | Extract data from websites |
+| 💻 System Commander | Execute system commands safely |
+| 📁 File Manager | Handle file operations |
+| 🐦 Twitter Explorer | Search Twitter data |
+| ℹ️ System Inspector | Get system information |
 
-### Adding New Tools
+## 💡 Example Uses
 
-1. Create a new tool class inheriting from `Tool`:
 ```python
-from smolagents import Tool
+# Ask AgentX to help with coding tasks
+"Help me write a Python script to batch resize images in a folder"
 
-class YourNewTool(Tool):
-    name = "your_tool_name"
-    description = "Description of what your tool does"
-    inputs = {
-        "param1": {
-            "type": "string",
-            "description": "Description of param1"
-        }
-    }
-    output_type = "string"
+# Research and summarize
+"Find and summarize recent articles about Rust vs Go performance"
 
-    def forward(self, param1: str) -> str:
-        # Implement your tool logic here
-        pass
+# System tasks
+"Help me set up a PostgreSQL database with the right configuration for my Django app"
 ```
 
-2. Register the tool with the AgentManager:
-```python
-agent_manager.add_tool(YourNewTool())
-```
+## 🔒 Security
 
-### Security Considerations
+AgentX takes security seriously:
+- All code execution is sandboxed
+- Package imports are strictly controlled
+- Environment variables for sensitive data
+- Comprehensive logging and monitoring
 
-- Environment variables are used for all sensitive information
-- Package imports are restricted to a safe allowlist
-- Code execution is sandboxed (when using E2B)
-- All tool executions are logged and monitored
+## 🤝 Contributing
 
-## Testing
+We welcome contributions! Here's how:
 
-Run the test suite:
-```bash
-python -m pytest tests/
-```
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Contributing
+## 📜 License
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+MIT License - feel free to use in your own projects!
 
-## License
+## 🙋‍♂️ Need Help?
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+- 📖 [Documentation](docs/README.md)
+- 🐛 [Issue Tracker](https://github.com/eelbaz/agentx/issues)
+- 💬 [Discussions](https://github.com/eelbaz/agentx/discussions)
+
+---
+
+<p align="center">
+  Made with ❤️ by the AgentX Team
+</p> 
