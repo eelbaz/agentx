@@ -1,6 +1,6 @@
 # 🤖 AgentX
 
-AgentX is your autonomous AI agent that can handle a wide range of tasks independently. Built on the [smolagents](https://huggingface.co/docs/smolagents) framework by the HuggingFace team, with a beautiful interface powered by [OpenWebUI](https://github.com/open-webui/open-webui), it combines multiple LLMs with specialized tools to help you accomplish virtually any task - from research and analysis to coding and system administration.
+AgentX is your autonomous AI agent that can handle a wide range of tasks independently. Built on the [smolagents](https://huggingface.co/docs/smolagents) framework by the HuggingFace team, with a beautiful interface powered by [OpenWebUI](https://github.com/open-webui/open-webui), it combines multiple LLM Providers/Models selection with specialized tools to help you accomplish virtually any task - from research and analysis to coding and system administration.
 
 ![AgentX UI](docs/ui-screenshot.png)
 
