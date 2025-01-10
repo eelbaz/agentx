@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentX Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="/static/js/app.js"></script>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .model-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .model-dropdown.show {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-[#0D0F13] text-gray-100 min-h-screen">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-[#1A1D24] flex flex-col">
+            <!-- New Chat Button -->
+            <div class="p-2">
+                <button id="new-chat-btn" onclick="startNewChat()" class="flex items-center gap-2 w-full py-2 px-3 bg-[#2A2D34] hover:bg-[#3A3D44] rounded-lg text-sm opacity-50" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    New Chat
+                </button>
+            </div>
+
+            <!-- Chat History -->
+            <div class="flex-1 overflow-y-auto px-2">
+                <div class="text-xs font-medium text-gray-400 px-2 py-1">Today</div>
+                <div id="chat-history" class="space-y-1">
+                    <!-- Chat history items will be inserted here -->
+                </div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="p-2 border-t border-gray-800">
+                <div class="flex items-center gap-2 px-2 py-1">
+                    <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-sm font-medium">
+                        U
+                    </div>
+                    <div class="flex-1 text-sm">User</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Chat Header with Model Selection -->
+            <div class="flex items-center justify-between p-2 border-b border-gray-800">
+                <!-- Provider and Model Selector -->
+                <div class="flex items-center gap-2">
+                    <!-- Provider Selector -->
+                    <div class="relative" id="provider-selector">
+                        <button onclick="toggleProviderDropdown()" class="flex items-center gap-2 px-3 py-1.5 hover:bg-[#2A2D34] rounded-lg text-sm">
+                            <span id="selected-provider">Select Provider</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div id="provider-dropdown" class="absolute left-0 top-full mt-1 w-48 bg-[#2A2D34] rounded-lg shadow-lg model-dropdown z-10">
+                            <!-- Provider options will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Model Selector -->
+                    <div class="relative" id="model-selector">
+                        <button onclick="toggleModelDropdown()" class="flex items-center gap-2 px-3 py-1.5 hover:bg-[#2A2D34] rounded-lg text-sm">
+                            <span id="selected-model">Select Model</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div id="model-dropdown" class="absolute left-0 top-full mt-1 w-64 bg-[#2A2D34] rounded-lg shadow-lg model-dropdown z-10">
+                            <!-- Model options will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refresh Button -->
+                <button onclick="refreshModels()" class="p-1.5 hover:bg-[#2A2D34] rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-messages">
+                <!-- Messages will be inserted here -->
+            </div>
+
+            <!-- Thinking Indicator -->
+            <div id="thinking-indicator" class="px-4 py-2 text-sm bg-[#1A1D24] border-t border-gray-800 hidden">
+                <div class="flex items-center justify-center gap-2">
+                    <svg class="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <div class="text-gray-300">Processing your request...</div>
+                </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="p-4 border-t border-gray-800">
+                <div class="flex gap-4">
+                    <input
+                        type="text"
+                        id="message-input"
+                        class="flex-1 bg-[#2A2D34] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Select a provider and model to start..."
+                        disabled
+                    >
+                    <button
+                        onclick="sendMessage()"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
