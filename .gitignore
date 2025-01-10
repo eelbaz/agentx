@@ -24,21 +24,23 @@ wheels/
 venv/
 env/
 ENV/
-.env
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-.DS_Store
 
 # Project specific
 artifacts/
 logs/
-*.log
-tmp/
-.coverage
-htmlcov/
-.pytest_cache/
-.mypy_cache/ 
+.env
+.env.*
+!.env.example
+
+# Documentation
+githubdocumentation/
+
+# OS
+.DS_Store
+Thumbs.db 
