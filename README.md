@@ -1,18 +1,18 @@
 # 🤖 AgentX
 
-AgentX is your AI-powered coding companion that thinks, codes, and solves problems alongside you. Built on the [smolagents](https://huggingface.co/docs/smolagents) framework by the HuggingFace team, with a beautiful interface powered by [OpenWebUI](https://github.com/open-webui/open-webui), it combines the power of multiple LLMs with a suite of specialized tools to help you tackle complex programming tasks.
+AgentX is your autonomous AI agent that can handle a wide range of tasks independently. Built on the [smolagents](https://huggingface.co/docs/smolagents) framework by the HuggingFace team, with a beautiful interface powered by [OpenWebUI](https://github.com/open-webui/open-webui), it combines multiple LLMs with specialized tools to help you accomplish virtually any task - from research and analysis to coding and system administration.
 
-![AgentX Demo](docs/demo.gif)
+![AgentX UI](docs/ui-screenshot.png)
 
 ## ✨ What Makes AgentX Special
 
+- **True Autonomy**: AgentX doesn't just respond - it thinks, plans, and executes complex tasks independently
 - **Multi-Brain Intelligence**: Switch between different LLM providers to leverage their unique strengths:
   - 🌐 **OpenAI**: State-of-the-art models like GPT-4
   - 🧠 **Anthropic**: Advanced reasoning with Claude
   - 🔒 **Ollama**: Air-gapped, private deployment of open-source models
   - 💻 **DeepSeek**: Specialized coding assistance
-- **Real Coding Partner**: Not just suggestions - AgentX writes, tests, and fixes code in real-time
-- **Tool-Powered**: Equipped with web search, system commands, file operations, and more
+- **Versatile Tool Suite**: Equipped with web search, system commands, file operations, and more
 - **Security First**: Sandboxed execution environment with strict package controls
 - **Beautiful UI**: Clean, responsive interface with real-time streaming responses
 
@@ -71,9 +71,11 @@ Optional but enhances capabilities:
 - Twitter API keys (for research)
 - E2B API key (for secure code execution)
 
-## 🛠️ Core Tools
+## 🛠️ Core Tools & Extensibility
 
-AgentX comes equipped with a powerful set of default tools, and you can easily extend it with your own:
+AgentX is designed to be highly extensible. While it comes with powerful default tools, its true strength lies in its ability to be extended with custom tools for any use case.
+
+### 📦 Built-in Tools
 
 | Tool | Description |
 |------|-------------|
@@ -84,50 +86,165 @@ AgentX comes equipped with a powerful set of default tools, and you can easily e
 | 🐦 Twitter Explorer | Search Twitter data |
 | ℹ️ System Inspector | Get system information |
 
-### 🔧 Adding Custom Tools
+### 🔧 Creating Custom Tools
 
-Extend AgentX with your own tools by implementing the `Tool` class from smolagents:
+AgentX makes it easy to add new capabilities. Here's how to create your own tools:
 
+#### 1. Basic Tool Structure
 ```python
 from smolagents import Tool
+from typing import Dict, Any
 
 class MyCustomTool(Tool):
     name = "my_custom_tool"
     description = "Description of what your tool does"
     inputs = {
-        "param1": {"type": "string", "description": "Parameter description"},
-        # Add more parameters as needed
+        "param1": {
+            "type": "string",
+            "description": "What this parameter does",
+            "required": True
+        },
+        "param2": {
+            "type": "integer",
+            "description": "Another parameter",
+            "default": 42
+        }
     }
-    output_type = "string"  # or any other type
+    output_type = "string"  # or "image", "file", "json", etc.
 
-    def forward(self, **inputs):
-        # Implement your tool's logic here
+    def forward(self, **inputs) -> Any:
+        # Your tool's logic here
+        result = self.process_inputs(inputs)
         return result
 ```
 
-Then add your tool to the agent:
+#### 2. Tool Categories
+You can create various types of tools:
+- **API Tools**: Interact with external services
+- **Data Processing Tools**: Handle different data formats
+- **System Tools**: Interact with the operating system
+- **AI Tools**: Integrate other AI models
+- **Custom Protocols**: Implement any protocol or service
+
+#### 3. Adding Tools to AgentX
 
 ```python
 from agentx import AgentManager
-from my_tools import MyCustomTool
+from my_tools import MyCustomTool, AnotherTool
 
+# Single tool
 agent = AgentManager(
     additional_tools=[MyCustomTool()]
 )
+
+# Multiple tools
+agent = AgentManager(
+    additional_tools=[
+        MyCustomTool(),
+        AnotherTool(api_key="your_key")
+    ]
+)
+
+# With configuration
+agent = AgentManager(
+    additional_tools=[
+        MyCustomTool(
+            rate_limit=100,
+            cache_results=True
+        )
+    ]
+)
 ```
+
+#### 4. Best Practices
+- **Error Handling**: Implement robust error handling in your tools
+- **Rate Limiting**: Include rate limiting for API calls
+- **Caching**: Cache results when appropriate
+- **Documentation**: Provide clear descriptions and examples
+- **Type Safety**: Use type hints and validate inputs
+- **Security**: Handle credentials safely using environment variables
+
+#### 5. Example: Creating an API Tool
+
+```python
+from smolagents import Tool
+import requests
+from typing import Dict, Any
+import os
+
+class WeatherTool(Tool):
+    name = "weather_tool"
+    description = "Get current weather for a location"
+    inputs = {
+        "city": {
+            "type": "string",
+            "description": "City name",
+            "required": True
+        },
+        "units": {
+            "type": "string",
+            "description": "Temperature units (celsius/fahrenheit)",
+            "default": "celsius"
+        }
+    }
+    output_type = "json"
+
+    def __init__(self, api_key: str = None):
+        super().__init__()
+        self.api_key = api_key or os.getenv("WEATHER_API_KEY")
+        if not self.api_key:
+            raise ValueError("Weather API key not provided")
+
+    def forward(self, **inputs) -> Dict[str, Any]:
+        city = inputs["city"]
+        units = inputs.get("units", "celsius")
+        
+        response = requests.get(
+            "https://api.weather.com/v1/current",
+            params={
+                "q": city,
+                "units": units,
+                "appid": self.api_key
+            }
+        )
+        response.raise_for_status()
+        
+        return response.json()
+```
+
+### 🔌 Community Tools
+
+The AgentX community has created many useful tools:
+- **Database Tools**: SQL, MongoDB, Redis integrations
+- **Cloud Tools**: AWS, GCP, Azure services
+- **Analytics Tools**: Data processing and visualization
+- **Communication Tools**: Email, Slack, Discord integration
+
+Visit our [Tools Repository](https://github.com/eelbaz/agentx/tools) to explore community tools or share your own!
 
 ## 💡 Example Uses
 
-```python
-# Ask AgentX to help with coding tasks
-"Help me write a Python script to batch resize images in a folder"
+```markdown
+# Research Assistant
+"Research the latest developments in quantum computing and prepare a summary focusing on practical applications"
 
-# Research and summarize
-"Find and summarize recent articles about Rust vs Go performance"
+# News Analyst
+"Find and analyze recent news about AI regulation in the EU, highlighting key policy changes"
 
-# System tasks
-"Help me set up a PostgreSQL database with the right configuration for my Django app"
+# System Administrator
+"Monitor system resources, identify processes using high CPU, and suggest optimization strategies"
+
+# Coding Partner
+"Help me build a FastAPI service that processes and analyzes Twitter data"
+
+# Data Analyst
+"Analyze this CSV file of sales data and create visualizations of the key trends"
+
+# Personal Assistant
+"Help me plan a technical conference schedule, considering speaker availability and topic relevance"
 ```
+
+![AgentX in Action](docs/agent-demo.png)
 
 ## 🔒 Security & Privacy
 
