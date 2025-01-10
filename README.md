@@ -1,6 +1,6 @@
 # 🤖 AgentX
 
-AgentX is your autonomous AI agent that can handle a wide range of tasks independently. Built on the [smolagents](https://huggingface.co/docs/smolagents) framework by the HuggingFace team, with a beautiful interface powered by [OpenWebUI](https://github.com/open-webui/open-webui), it combines multiple LLM Providers/Models selection with specialized tools to help you accomplish virtually any task - from research and analysis to coding and system administration.
+AgentX is your autonomous agentic AI companion that can handle a wide range of tasks independently. Built on the [smolagents](https://huggingface.co/docs/smolagents) framework by the HuggingFace team, with a beautiful interface powered by [OpenWebUI](https://github.com/open-webui/open-webui), it combines multiple LLM Providers/Models selection with specialized tools to help you accomplish virtually any task - from research and analysis to coding and system administration.
 
 ![AgentX UI](docs/ui-screenshot.png)
 
@@ -11,7 +11,7 @@ AgentX is your autonomous AI agent that can handle a wide range of tasks indepen
   - 🌐 **OpenAI**: State-of-the-art models like GPT-4o
   - 🧠 **Anthropic**: Advanced reasoning with Claude
   - 🔒 **Ollama**: Air-gapped, private deployment of open-source models
-  - 💻 **DeepSeek**: Specialized coding assistance
+  - 💻 **DeepSeek**: DeekSeek-V3 SOTA LLM - Specialized coding, math and reasoning assistance
 - **Versatile Tool Suite**: Equipped with web search, system commands, file operations, and more
 - **Security First**: Sandboxed execution environment with strict package controls
 - **Beautiful UI**: Clean, responsive interface with real-time streaming responses
@@ -42,7 +42,7 @@ cp .env.example .env     # Then edit .env with your API keys
 uvicorn src.app:app --reload
 ```
 
-Then open http://localhost:8000 in your browser and start chatting with your new coding companion!
+Then open http://localhost:8000 in your browser and start chatting with your new agentic AI companion!
 
 ## 🔑 LLM Providers
 
