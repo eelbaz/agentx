@@ -8,7 +8,7 @@ AgentX is your autonomous AI agent that can handle a wide range of tasks indepen
 
 - **True Autonomy**: AgentX doesn't just respond - it thinks, plans, and executes complex tasks independently
 - **Multi-Brain Intelligence**: Switch between different LLM providers to leverage their unique strengths:
-  - 🌐 **OpenAI**: State-of-the-art models like GPT-4
+  - 🌐 **OpenAI**: State-of-the-art models like GPT-4o
   - 🧠 **Anthropic**: Advanced reasoning with Claude
   - 🔒 **Ollama**: Air-gapped, private deployment of open-source models
   - 💻 **DeepSeek**: Specialized coding assistance
